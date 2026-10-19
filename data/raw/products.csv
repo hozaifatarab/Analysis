@@ -1,0 +1,17 @@
+﻿product_id,product_name,category,price,cost,rating
+P001,laptop Pro 15,electronics,4200.0,3100.0,4.6
+P002,smart phone X,electronics,2600.0,1900.0,4.1
+P003,wireless earbuds,electronics,350.0,210.0,4.7
+P004,smart watch S,electronics,900.0,620.0,4.4
+P005,running shoes,fashion,480.0,260.0,3.5
+P006,cotton shirt,fashion,160.0,80.0,4.9
+P007,leather wallet,fashion,220.0,110.0,4.5
+P008,sunglasses classic,fashion,300.0,150.0,4.6
+P009,arabic coffee set,home,260.0,150.0,3.6
+P010,non-stick pot set,home,520.0,330.0,4.1
+P011,table lamp LED,home,180.0,100.0,4.0
+P012,bedding set,home,200.0,200.0,4.8
+P013,vitamin C serum,beauty,140.0,70.0,4.4
+P014,hair dryer Pro,beauty,320.0,190.0,4.6
+P015,kids building blocks,toys,200.0,110.0,4.1
+P016,board game family,toys,150.0,80.0,3.7

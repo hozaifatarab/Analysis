@@ -54,9 +54,13 @@ def loyalty_deep(orders):
 
 
 def price_sensitivity(orders, products):
+    prod_cols = ['product_id', 'product_name', 'category']
+    if 'cost' in products.columns:
+        prod_cols.append('cost')
     enr = orders[orders['status'] == 'completed'].merge(
-        products[['product_id', 'product_name', 'category', 'cost']], on='product_id', how='left')
-    enr['line_profit'] = enr['total'] - enr['quantity'] * enr['cost'].fillna(0)
+        products[prod_cols], on='product_id', how='left')
+    enr['cost'] = enr['cost'].fillna(0) if 'cost' in enr.columns else 0.0
+    enr['line_profit'] = enr['total'] - enr['quantity'] * enr['cost']
     try:
         enr['price_tier'] = pd.qcut(enr['price'], 4, labels=['budget', 'mid', 'premium', 'luxury'],
                                     duplicates='drop')
@@ -71,9 +75,12 @@ def price_sensitivity(orders, products):
     t['share_orders'] = (t['orders'] / t['orders'].sum() * 100).round(1)
     cat = products.merge(orders[orders['status'] == 'completed'].groupby('product_id')['quantity']
                          .sum().rename('units'), on='product_id', how='left').fillna({'units': 0})
-    corr = cat.groupby('category')[['price', 'units']].apply(
-        lambda d: round(d['price'].corr(d['units']), 2) if len(d) > 2 else np.nan).reset_index()
-    corr.columns = ['category', 'price_units_corr']
+    if 'price' in cat.columns:
+        corr = cat.groupby('category')[['price', 'units']].apply(
+            lambda d: round(d['price'].corr(d['units']), 2) if len(d) > 2 else np.nan).reset_index()
+        corr.columns = ['category', 'price_units_corr']
+    else:
+        corr = pd.DataFrame({'category': cat['category'].unique(), 'price_units_corr': np.nan})
     return t.sort_values('revenue', ascending=False), corr
 
 

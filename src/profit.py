@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 def enrich(orders, products):
-    m=orders.merge(products[['product_id','cost','category']],on='product_id',how='left')
-    m['cost']=m['cost'].fillna(0)
-    m['line_cost']=(m['quantity']*m['cost']).round(2)
-    m['line_profit']=(m['total']-m['line_cost']).round(2)
+    prod_cols = ['product_id', 'category']
+    if 'cost' in products.columns:
+        prod_cols.insert(1, 'cost')
+    m = orders.merge(products[prod_cols], on='product_id', how='left')
+    m['cost'] = m['cost'].fillna(0) if 'cost' in m.columns else 0.0
+    m['line_cost'] = (m['quantity'] * m['cost']).round(2)
+    m['line_profit'] = (m['total'] - m['line_cost']).round(2)
     return m
 def kpis(enr):
     d=enr[enr['status']=='completed']

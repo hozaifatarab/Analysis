@@ -33,6 +33,7 @@ def save_run(orders, products, kpis, tag='manual', rfm=None, profit=None, recs=N
     con.close()
     return str(DB)
 def run_history(limit=50):
+    DB.parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(DB)
     try:
         df = pd.read_sql(f'select * from runs order by rowid desc limit {int(limit)}', con)
